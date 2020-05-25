@@ -1,9 +1,9 @@
-var nodeDDCCTL = require("../");
+import nddcctl from "../src";
 
-describe("nodeDDCCTL", () => {
+describe("nddcctl", () => {
   let obj;
   beforeAll(() => {
-    obj = new nodeDDCCTL.MyObject(0);
+    obj = new nddcctl.MyObject(0);
   });
 
   it("should export a wrapped object", function () {
@@ -13,51 +13,51 @@ describe("nodeDDCCTL", () => {
   });
 
   it("should export function that returns nothing", function () {
-    expect(nodeDDCCTL.nothing()).toBe(undefined);
+    expect(nddcctl.nothing()).toBe(undefined);
   });
 
   it("should export a function that returns a string", function () {
-    expect(nodeDDCCTL.aString()).toEqual(expect.any(String));
+    expect(nddcctl.aString()).toEqual(expect.any(String));
   });
 
   it("should export a function that returns a boolean", function () {
-    expect(nodeDDCCTL.aBoolean()).toEqual(expect.any(Boolean));
+    expect(nddcctl.aBoolean()).toEqual(expect.any(Boolean));
   });
 
   it("should export function that returns a number", function () {
-    expect(nodeDDCCTL.aNumber()).toEqual(expect.any(Number));
+    expect(nddcctl.aNumber()).toEqual(expect.any(Number));
   });
 
   it("should export function that returns an object", function () {
-    expect(nodeDDCCTL.anObject()).toEqual(expect.any(Object));
+    expect(nddcctl.anObject()).toEqual(expect.any(Object));
   });
 
   it("should export function that returns an object with a key, value pair", function () {
-    expect(nodeDDCCTL.anObject()).toEqual({
+    expect(nddcctl.anObject()).toEqual({
       key: "value",
     });
   });
 
   it("should export function that returns an array with some values", function () {
-    expect(nodeDDCCTL.anArray()).toEqual([1, 2, 3]);
+    expect(nddcctl.anArray()).toEqual([1, 2, 3]);
   });
 
   it("should export function that calls a callback", function () {
     const fn = jest.fn();
-    nodeDDCCTL.callback(fn);
+    nddcctl.callback(fn);
     expect(fn).toHaveBeenCalled();
   });
 
   it("should export function that calls a callback with a parameter", function () {
     const fn = jest.fn();
-    nodeDDCCTL.callbackWithParameter(fn);
+    nddcctl.callbackWithParameter(fn);
     expect(fn).toHaveBeenCalled();
   });
 
   describe("mainn", () => {
     let result;
     beforeAll(() => {
-      result = nodeDDCCTL.mainn();
+      result = nddcctl.mainn();
     });
 
     it("should contain array of screen objects", () => {
