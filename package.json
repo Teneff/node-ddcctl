@@ -1,0 +1,44 @@
+{
+  "name": "node-ddcctl",
+  "version": "1.0.0",
+  "description": "Node bindings for ddcctl",
+  "main": "index.js",
+  "scripts": {
+    "configure": "node-gyp configure",
+    "build": "node-gyp build",
+    "gyp": "node-gyp",
+    "make": "cd ddcctl && make amd",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Teneff/node-ddcctl.git"
+  },
+  "keywords": [
+    "bindings",
+    "DDC",
+    "monitor",
+    "controls",
+    "OSX"
+  ],
+  "author": "Stefan Teneff <st.teneff@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Teneff/node-ddcctl/issues"
+  },
+  "homepage": "https://github.com/Teneff/node-ddcctl#readme",
+  "gypfile": true,
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "nan": "^2.14.1",
+    "node-gyp": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.2",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
