@@ -3,6 +3,7 @@
         "ios": "cpp",
         "memory": "cpp",
         "__locale": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "memory_resource": "cpp"
     }
 }

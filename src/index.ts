@@ -21,11 +21,12 @@ export interface BuiltInDisplay extends Display {
 
 export interface ExternalDisplay extends Display {
   isBuiltIn: false;
-  setBrightness: (brightness: number) => Promise<boolean>
+  setBrightness: (brightness: number) => Promise<boolean>;
 }
 
 export interface NodeDDCTL {
-    mainn: () => (BuiltInDisplay | ExternalDisplay)[];
+  mainn: () => (BuiltInDisplay | ExternalDisplay)[];
+  addEventListener: (eventType: string, callback: (e: any) => void) => void;
 }
 
 const nddcctl: NodeDDCTL = bindings("nddcctl");

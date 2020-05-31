@@ -5,10 +5,11 @@
   "main": "build/nddcctl/index.js",
   "types": "build/nddcctl/index.d.ts",
   "scripts": {
+    "ex": "node -r ts-node/register examples",
     "configure": "node-gyp configure",
     "build:gyp": "node-gyp build",
     "prebuild": "yarn build:gyp",
-    "build": "yarn tsc -d",
+    "build": "tsc",
     "make": "cd ddcctl && make amd",
     "test": "jest"
   },
@@ -38,9 +39,11 @@
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
+    "@types/node": "^14.0.5",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "ts-jest": "^26.0.0",
+    "ts-node": "^8.10.1",
     "typescript": "^3.9.3"
   },
   "jest": {

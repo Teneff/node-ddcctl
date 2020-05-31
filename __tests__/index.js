@@ -1,4 +1,4 @@
-import nddcctl from "../src";
+import nddcctl from "../lib";
 
 describe("nddcctl", () => {
   let obj;
@@ -45,13 +45,13 @@ describe("nddcctl", () => {
   it("should export function that calls a callback", function () {
     const fn = jest.fn();
     nddcctl.callback(fn);
-    expect(fn).toHaveBeenCalled();
+    expect(fn).toHaveBeenCalledWith();
   });
 
   it("should export function that calls a callback with a parameter", function () {
     const fn = jest.fn();
     nddcctl.callbackWithParameter(fn);
-    expect(fn).toHaveBeenCalled();
+    expect(fn).toHaveBeenCalledWith("parameter test");
   });
 
   describe("mainn", () => {
@@ -68,6 +68,8 @@ describe("nddcctl", () => {
             displayScale: expect.any(Number),
             rotation: expect.any(Number),
             isBuiltIn: expect.any(Boolean),
+            model: expect.any(Number),
+            serialNumber: expect.any(Number),
             size: expect.objectContaining({
               pixel: expect.objectContaining({
                 width: expect.any(Number),
@@ -90,7 +92,9 @@ describe("nddcctl", () => {
             "displayScale": 2,
             "id": 69734662,
             "isBuiltIn": true,
+            "model": 1,
             "rotation": 0,
+            "serialNumber": 0,
             "size": Object {
               "physical": Object {
                 "height": 215.31125504449506,
@@ -106,7 +110,9 @@ describe("nddcctl", () => {
             "displayScale": 1,
             "id": 722471575,
             "isBuiltIn": false,
+            "model": 0,
             "rotation": 0,
+            "serialNumber": 1093743443,
             "size": Object {
               "physical": Object {
                 "height": 294.96773750551284,
@@ -122,7 +128,9 @@ describe("nddcctl", () => {
             "displayScale": 1,
             "id": 722496920,
             "isBuiltIn": false,
+            "model": 0,
             "rotation": 0,
+            "serialNumber": 1093882963,
             "size": Object {
               "physical": Object {
                 "height": 294.96773750551284,
@@ -136,6 +144,30 @@ describe("nddcctl", () => {
           },
         ]
       `);
+    });
+  });
+
+  describe("on", () => {
+    describe.skip("displaychange", () => {
+      const callback = jest.fn();
+      beforeAll(() => {
+        nddcctl.on("displaychange", callback);
+      });
+
+      it("should check if callback have been called", async () => {
+        await expect(callback).toHaveBeenCalledWith();
+      });
+    });
+
+    describe.skip("brightnesschange", () => {
+      const callback = jest.fn();
+      beforeAll(() => {
+        nddcctl.on("brightnesschange", callback);
+      });
+
+      it("should call the callback", async () => {
+        await expect(callback).toHaveBeenCalledWith("z");
+      });
     });
   });
 });

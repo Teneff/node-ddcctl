@@ -76,6 +76,27 @@ v8::Local<v8::Object> getScreenInfo(NSScreen *screen)
           .ToLocalChecked(),
       Nan::New(id));
 
+  // Nan::Set(
+  //     deviceInfo,
+  //     Nan::New("uuid")
+  //         .ToLocalChecked(),
+  //     Nan::New(
+  //       CFUUIDCreateString(NULL, CGDisplayCreateUUIDFromDisplayID(id))
+  //     )
+  // );
+
+  Nan::Set(
+      deviceInfo,
+      Nan::New("model")
+          .ToLocalChecked(),
+      Nan::New(CGDisplayIsBuiltin(id)));
+
+  Nan::Set(
+      deviceInfo,
+      Nan::New("serialNumber")
+          .ToLocalChecked(),
+      Nan::New(CGDisplaySerialNumber(id)));
+
   Nan::Set(
       deviceInfo,
       Nan::New("isBuiltIn")
@@ -149,85 +170,6 @@ NAN_METHOD(mainn)
   }
   info.GetReturnValue().Set(screens);
 }
-
-// NAN_METHOD(other)
-// {
-//   CGDirectDisplayID cdisplay;
-
-//   if (0 < displayId && displayId <= [_displayIDs count])
-//   {
-//     MyLog(@"I: polling display %lu's EDID", displayId);
-//     struct EDID edid = {};
-//     if (EDIDTest(cdisplay, &edid))
-//     {
-//       for (union descriptor *des = edid.descriptors; des < edid.descriptors + sizeof(edid.descriptors); des++)
-//       {
-//         switch (des->text.type)
-//         {
-//         case 0xFF:
-//           MyLog(@"I: got edid.serial: %@", EDIDString(des->text.data));
-//           break;
-//         case 0xFC:
-//           screenName = EDIDString(des->text.data);
-//           MyLog(@"I: got edid.name: %@", screenName);
-//           break;
-//         }
-//       }
-
-//       // Debugging
-//       if (dump_values)
-//       {
-//         for (uint i = 0x00; i <= 255; i++)
-//         {
-//           getControl(cdisplay, i);
-//           usleep(command_interval);
-//         }
-//       }
-
-//       // Actions
-//       [actions enumerateKeysAndObjectsUsingBlock:^(id argname, NSArray *valueArray, BOOL *stop) {
-//         NSInteger control_id = [valueArray[0] intValue];
-//         NSString *argval = valueArray[1];
-//         MyLog(@"D: action: %@: %@", argname, argval);
-
-//         if (control_id > -1)
-//         {
-//           // this is a valid monitor control
-//           NSString *argval_num = [argval stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"-+"]]; // look for relative setting ops
-//           if ([argval hasPrefix:@"+"] || [argval hasPrefix:@"-"])
-//           { // +/-NN relative
-//             getSetControl(cdisplay, control_id, argval_num, [argval substringToIndex:1]);
-//           }
-//           else if ([argval hasSuffix:@"+"] || [argval hasSuffix:@"-"])
-//           { // NN+/- relative
-//             // read, calculate, then write
-//             getSetControl(cdisplay, control_id, argval_num, [argval substringFromIndex:argval.length - 1]);
-//           }
-//           else if ([argval hasPrefix:@"?"])
-//           {
-//             // read current setting
-//             getControl(cdisplay, control_id);
-//           }
-//           else if (argval_num == argval)
-//           {
-//             // write fixed setting
-//             setControl(cdisplay, control_id, [argval intValue]);
-//           }
-//         }
-//         usleep(command_interval); // stagger comms to these wimpy I2C mcu's
-//       }];
-//     }
-//     else
-//     {
-//       MyLog(@"E: Failed to poll display!");
-//       return -1;
-//     }
-//   }
-//   else
-//   { // no display id given
-//     NSLog(@"HelpString");
-//   }
-// }
 
 // Wrapper Impl
 
