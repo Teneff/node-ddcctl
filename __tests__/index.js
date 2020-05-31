@@ -65,6 +65,7 @@ describe("nddcctl", () => {
         expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(Number),
+            uuid: expect.any(String),
             displayScale: expect.any(Number),
             rotation: expect.any(Number),
             isBuiltIn: expect.any(Boolean),
@@ -105,6 +106,7 @@ describe("nddcctl", () => {
                 "width": 2048,
               },
             },
+            "uuid": "A95F1D37-25F3-372E-D9E8-8D76C2A7139F",
           },
           Object {
             "displayScale": 1,
@@ -123,6 +125,7 @@ describe("nddcctl", () => {
                 "width": 1920,
               },
             },
+            "uuid": "6EE8675A-1780-E2F1-A897-CB8A750D94D3",
           },
           Object {
             "displayScale": 1,
@@ -141,6 +144,7 @@ describe("nddcctl", () => {
                 "width": 1920,
               },
             },
+            "uuid": "8413338C-1763-F075-2E59-FA24DD49B141",
           },
         ]
       `);

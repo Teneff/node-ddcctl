@@ -16,6 +16,8 @@ NAN_METHOD(callback);
 NAN_METHOD(callbackWithParameter);
 NAN_METHOD(mainn);
 NAN_METHOD(other);
+NAN_METHOD(getControl);
+NAN_METHOD(setControl);
 
 // Example with node ObjectWrap
 // Based on https://nodejs.org/api/addons.html#addons_wrapping_c_objects but using NAN

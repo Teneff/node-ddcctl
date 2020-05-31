@@ -1,3 +1,9 @@
+#ifdef DEBUG
+#define MyLog NSLog
+#else
+#define MyLog(...) (void)printf("%s\n",[[NSString stringWithFormat:__VA_ARGS__] UTF8String])
+#endif
+
 #include <Foundation/Foundation.h>
 #include <AppKit/NSScreen.h>
 #include "ddcctl/DDC.h"
@@ -76,14 +82,15 @@ v8::Local<v8::Object> getScreenInfo(NSScreen *screen)
           .ToLocalChecked(),
       Nan::New(id));
 
-  // Nan::Set(
-  //     deviceInfo,
-  //     Nan::New("uuid")
-  //         .ToLocalChecked(),
-  //     Nan::New(
-  //       CFUUIDCreateString(NULL, CGDisplayCreateUUIDFromDisplayID(id))
-  //     )
-  // );
+  NSString *uuid = (NSString *)CFUUIDCreateString(NULL, CGDisplayCreateUUIDFromDisplayID(id));
+
+  Nan::Set(
+      deviceInfo,
+      Nan::New("uuid")
+          .ToLocalChecked(),
+      Nan::New([uuid cStringUsingEncoding:NSASCIIStringEncoding])
+          .ToLocalChecked()
+  );
 
   Nan::Set(
       deviceInfo,
@@ -169,6 +176,65 @@ NAN_METHOD(mainn)
     }
   }
   info.GetReturnValue().Set(screens);
+}
+
+CGDirectDisplayID getDisplayByUUID(v8::Local<v8::Value> info) {
+  Nan::Utf8String *s = new Nan::Utf8String(info);
+
+
+  CFUUIDRef uuidRef = CFUUIDCreateFromString(
+    NULL,
+    (CFStringRef)**s
+  );
+
+  return CGDisplayGetDisplayIDFromUUID(uuidRef);
+}
+
+NAN_METHOD(setControl)
+{
+  CGDirectDisplayID cdisplay = getDisplayByUUID(info[0]);
+
+  struct DDCWriteCommand command;
+  command.control_id = Nan::To<uint>(info[1]).FromJust();
+  command.new_value = Nan::To<uint>(info[2]).FromJust();
+
+  if (!DDCWrite(cdisplay, &command)) {
+    MyLog(@"E: Failed to send DDC command!");
+  }
+}
+
+NAN_METHOD(getControl)
+{
+  CGDirectDisplayID cdisplay = getDisplayByUUID(info[0]);
+  
+  struct DDCReadCommand command;
+  
+  command.control_id = Nan::To<uint>(info[1]).FromJust();
+  command.max_value = 0;
+  command.current_value = 0;
+
+  MyLog(@"D: querying VCP control: #%u =?", command.control_id);
+
+  v8::Local<v8::Object> result = Nan::New<v8::Object>();
+  v8::Local<v8::Value> error;
+
+  if (!DDCRead(cdisplay, &command)) {
+      MyLog(@"E: DDC send command failed!");
+      MyLog(@"E: VCP control #%u (0x%02hhx) = current: %u, max: %u", command.control_id, command.control_id, command.current_value, command.max_value);
+      v8::Local<v8::Value> error = Nan::Error("err");
+  } else {
+      MyLog(@"I: VCP control #%u (0x%02hhx) = current: %u, max: %u", command.control_id, command.control_id, command.current_value, command.max_value);
+      Nan::Set(result,
+        Nan::New("value").ToLocalChecked(),
+        Nan::New(command.current_value)
+      );
+  }
+
+  v8::Local<v8::Function> callbackHandle = info[4].As<v8::Function>();
+  Nan::AsyncResource *resource = new Nan::AsyncResource(Nan::New<v8::String>("MyObject:CallCallbackWithParam").ToLocalChecked());
+  int argc = 2;
+  v8::Local<v8::Value> argv[] = { error, result };
+  resource->runInAsyncScope(Nan::GetCurrentContext()->Global(), callbackHandle, argc, argv);
 }
 
 // Wrapper Impl

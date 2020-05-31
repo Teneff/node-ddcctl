@@ -34,6 +34,10 @@ NAN_MODULE_INIT(InitAll) {
   //   Nan::GetFunction(Nan::New<FunctionTemplate>(EDIDTest)).ToLocalChecked());
   Nan::Set(target, Nan::New("mainn").ToLocalChecked(),
     Nan::GetFunction(Nan::New<FunctionTemplate>(mainn)).ToLocalChecked());
+  Nan::Set(target, Nan::New("getControl").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<FunctionTemplate>(getControl)).ToLocalChecked());
+  Nan::Set(target, Nan::New("setControl").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<FunctionTemplate>(setControl)).ToLocalChecked());
 
   // Passing target down to the next NAN_MODULE_INIT
   MyObject::Init(target);
