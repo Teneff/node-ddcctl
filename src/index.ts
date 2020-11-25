@@ -24,10 +24,16 @@ export interface ExternalDisplay extends Display {
   setBrightness: (brightness: number) => Promise<boolean>;
 }
 
-export interface NodeDDCTL {
+type Testing = {
+  [P: string]: (...args: any[]) => any;
+} & {
+  MyObject: { new (...args: any[]): any };
+};
+
+export type NodeDDCTL = {
   mainn: () => (BuiltInDisplay | ExternalDisplay)[];
   addEventListener: (eventType: string, callback: (e: any) => void) => void;
-}
+} & Testing;
 
 const nddcctl: NodeDDCTL = bindings("nddcctl");
 

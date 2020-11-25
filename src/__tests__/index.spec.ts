@@ -1,7 +1,7 @@
-import nddcctl from "../lib";
+import nddcctl from "..";
 
 describe("nddcctl", () => {
-  let obj;
+  let obj: any;
   beforeAll(() => {
     obj = new nddcctl.MyObject(0);
   });
@@ -55,7 +55,7 @@ describe("nddcctl", () => {
   });
 
   describe("mainn", () => {
-    let result;
+    let result: any;
     beforeAll(() => {
       result = nddcctl.mainn();
     });

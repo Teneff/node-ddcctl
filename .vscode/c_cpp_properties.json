@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**"
             ],
             "defines": [],
-            "macFrameworkPath": [],
+            "macFrameworkPath": ["/System/Library/Frameworks"],
             "compilerPath": "/usr/local/bin/gcc-10",
             "cStandard": "gnu17",
             "cppStandard": "gnu++14",

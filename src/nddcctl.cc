@@ -1,7 +1,7 @@
 #include <Foundation/Foundation.h>
 #include <AppKit/NSScreen.h>
 
-#include "ddcctl/DDC.h"
+#include "../ddcctl/DDC.h"
 #include "functions.h"
 
 using v8::FunctionTemplate;

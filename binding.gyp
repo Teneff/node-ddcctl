@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "nddcctl",
-      "sources": [ "nddcctl.cc", "functions.cc" ],
+      "sources": [ "src/nddcctl.cc" ],
       "include_dirs" : [
         "<!(node -e \"require('nan')\")"
       ],
@@ -16,8 +16,8 @@
       },
       'link_settings': {
         'libraries': [
-          '$(SDKROOT)/System/Library/Frameworks/Foundation.framework',
-          '$(SDKROOT)/System/Library/Frameworks/AppKit.framework'
+          '-framework Foundation',
+          '-framework AppKit'
         ]
       }
     }

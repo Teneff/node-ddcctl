@@ -6,7 +6,7 @@
 
 #include <Foundation/Foundation.h>
 #include <AppKit/NSScreen.h>
-#include "ddcctl/DDC.h"
+#include "../ddcctl/DDC.h"
 #include "functions.h"
 
 NAN_METHOD(nothing)
